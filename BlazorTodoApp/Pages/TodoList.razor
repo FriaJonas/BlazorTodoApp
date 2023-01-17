@@ -1,0 +1,124 @@
+﻿@page "/TodoList"
+@inject Data.TodoDB dbConn ;
+@using Data;
+
+<h3>Att göra lista</h3>
+<EditForm Model="@ActiveTask" OnSubmit="@HandleSubmit">
+    <div class="row">
+        <div class="col-sm-4">
+            <p>
+                <label>Rubrik:</label>
+                <InputText @bind-Value="ActiveTask.Header" class="form-control" />
+            </p>
+        </div>
+        <div class="col-sm-4">
+            <p>
+                <label>Kategori</label>
+                <InputSelect @bind-Value="ActiveTask.Category" class="form-select">
+                    <option>Välj....</option>
+                    @if (categories != null)
+                    {
+                        foreach(var cat in categories)
+                        {
+                            <option value="@cat.Id">@cat.Name</option>
+                        }    
+                    }
+                </InputSelect>
+            </p>
+        </div>
+        <div class="col-sm-4">
+            <p>
+                <label>
+                    Slutförd <br />
+                    <InputCheckbox @bind-Value="ActiveTask.Completed" class="form-check-input" />
+                </label>
+            </p>
+        </div>
+    </div>
+    <p>
+
+        <label>Beskrivning</label>
+        <InputTextArea @bind-Value="ActiveTask.Description" class="form-control" />
+    </p>
+    <p>
+        <button type="submit" class="btn btn-success"> <i class="oi oi-check"></i> Spara</button>
+    </p>  
+</EditForm>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Rubrik</th>
+            <th>Beskrigning</th>
+            <th>Kategori</th>
+            <th>Prioritet</th>
+            <th>Slutförd</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (allTasks != null)
+        {
+            foreach(var t in allTasks)
+            {
+                <tr>
+                    <td><span class="oi oi-pencil" role="button" @onclick="(r)=>UpdateTask(t)"></span></td>
+                    <td>@t.Header</td>
+                    <td>@t.Description</td>
+                    <td>@t.CategoryName</td>
+                    <td>@t.Priority</td>
+                    <td>@t.Completed</td>
+                </tr>
+            }   
+        }
+        
+    </tbody>
+</table>
+
+@code {
+
+    //Activetask är den som vi använder när vi skapar ny!
+    TodoTask ActiveTask { get; set; } = new();
+
+    //När vi ska läsa upp alla aktiva uppgifter
+    IEnumerable<TodoTaskView> allTasks { get; set; } = default!;
+
+    //Listan för alla kategorier som vi ska kunna gruppera våra uppgifter i.
+    IEnumerable<Category> categories { get; set; } = default!;
+
+    //När sidan laddas
+    protected override async Task OnInitializedAsync()
+    {
+        //Ladda katergorierna i listan 
+        categories = await dbConn.ListAllCategories();
+        allTasks = await dbConn.ListAllTaskView();
+    }
+    private void UpdateTask(TodoTask t)
+    {
+        ActiveTask = t;
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (ActiveTask.Id == Guid.Empty)
+        {
+            //Skapar nytt id om det är en ny task
+            ActiveTask.Id = Guid.NewGuid();
+
+            //Sparar
+            await dbConn.AddTask(ActiveTask);
+
+            //Uppdaterar listan igen med samtliga tasks
+            allTasks = await dbConn.ListAllTaskView();
+        }
+        else
+        {
+            await dbConn.UpdateTask(ActiveTask);
+            allTasks = await dbConn.ListAllTaskView();
+        }
+
+        //Vi tömmer den aktiva uppgiften
+        ActiveTask = new TodoTask() { Id = Guid.Empty };
+    }
+
+}
