@@ -51,7 +51,7 @@ namespace BlazorTodoApp.Data
         {
             var sql = "DELETE FROM TblTask WHERE Id=@Id";
             using var cn = _DB.Conn;
-            return await cn.ExecuteScalarAsync<int>(sql, new { Id });
+            return await cn.ExecuteScalarAsync<int>(sql, new { Id});
         }
     }
 }

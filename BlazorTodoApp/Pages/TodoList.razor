@@ -41,7 +41,7 @@
         <InputTextArea @bind-Value="ActiveTask.Description" class="form-control" />
     </p>
     <p>
-        <button type="submit" class="btn btn-success"> <i class="oi oi-check"></i> Spara</button>
+        <button type="submit" class="btn btn-info"> <i class="oi oi-plus"></i> Spara</button>
     </p>  
 </EditForm>
 
@@ -54,6 +54,7 @@
             <th>Kategori</th>
             <th>Prioritet</th>
             <th>Slutförd</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -68,6 +69,7 @@
                     <td>@t.CategoryName</td>
                     <td>@t.Priority</td>
                     <td>@t.Completed</td>
+                    <td><span class=" btn btn-warning btn-sm oi oi-trash" role="button" @onclick="(r)=>DeleteTask(t)"></span></td>
                 </tr>
             }   
         }
@@ -93,9 +95,16 @@
         categories = await dbConn.ListAllCategories();
         allTasks = await dbConn.ListAllTaskView();
     }
+
     private void UpdateTask(TodoTask t)
     {
         ActiveTask = t;
+    }
+
+    public async Task DeleteTask(TodoTask t)
+    {
+        var i = dbConn.DeleteTask(t.Id);
+        allTasks = await dbConn.ListAllTaskView();
     }
 
     private async Task HandleSubmit()

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTodoApp", "BlazorTodoApp\BlazorTodoApp.csproj", "{6BEB5383-1A9C-40F3-B734-EDF35212FF33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoAPI_Example", "TodoAPI_Example\TodoAPI_Example.csproj", "{970054AB-2DC7-4A91-9CB2-E34D52B586CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6BEB5383-1A9C-40F3-B734-EDF35212FF33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BEB5383-1A9C-40F3-B734-EDF35212FF33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BEB5383-1A9C-40F3-B734-EDF35212FF33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{970054AB-2DC7-4A91-9CB2-E34D52B586CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{970054AB-2DC7-4A91-9CB2-E34D52B586CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{970054AB-2DC7-4A91-9CB2-E34D52B586CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{970054AB-2DC7-4A91-9CB2-E34D52B586CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
