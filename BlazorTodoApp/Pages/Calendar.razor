@@ -1,0 +1,34 @@
+﻿@page "/Calendar"
+<h4>@FirstDate.ToShortDateString()</h4>
+<p>Vald dag: @ChoosedDate.ToShortDateString()</p>
+<table class="table">
+    <tr><td>Mån</td><td>Tis</td><td>Ons</td><td>Tor</td><td>Fre</td><td>Lör</td><td>Sön</td></tr>
+    @for(int w=1;w<=6;w++)
+    {
+        <tr>
+            @for (int i = 0; i <= 6; i++)
+            {
+                DateTime DayDate = FirstDate.AddDays(i * w);
+                <td class="p-3" @onclick="(r)=>SetDate(DayDate)">@DayDate.Day</td>
+            }
+        </tr>
+    }
+
+</table>
+@code {
+
+    DateTime FirstDate;
+    DateTime ChoosedDate;
+    protected override async Task OnInitializedAsync()
+    {
+        DateTime now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+        int dayOfWeek = (int)now.DayOfWeek;
+        if (dayOfWeek == 0) dayOfWeek = 7;
+        FirstDate = now.AddDays(-dayOfWeek+1);
+
+    }
+    protected void SetDate(DateTime dt)
+    {
+        ChoosedDate = dt;
+    }
+}
